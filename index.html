@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shiva Cherpalli | DevOps Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --card: #11111a;
+      --accent1: #ff3c5f;
+      --accent2: #00e5ff;
+      --accent3: #ffe600;
+      --accent4: #7b2fff;
+      --text: #f0f0f0;
+      --muted: #888;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+    .glow-1 { background: rgba(255,60,95,0.18); top: -100px; left: -100px; }
+    .glow-2 { background: rgba(0,229,255,0.12); bottom: -100px; right: -100px; }
+    .glow-3 { background: rgba(123,47,255,0.15); top: 30%; left: 40%; }
+
+    .hero-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+      padding: 0.35rem 0.9rem;
+      border-radius: 2px;
+      width: fit-content;
+      margin-bottom: 2rem;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+
+    .hero h1 .highlight-red  { color: var(--accent1); }
+    .hero h1 .highlight-cyan { color: var(--accent2); }
+    .hero h1 .highlight-yellow { color: var(--accent3); }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2.5rem;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 2px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .tag-red    { background: rgba(255,60,95,0.15);  color: var(--accent1); border: 1px solid rgba(255,60,95,0.3);  }
+    .tag-cyan   { background: rgba(0,229,255,0.1);   color: var(--accent2); border: 1px solid rgba(0,229,255,0.3);  }
+    .tag-yellow { background: rgba(255,230,0,0.1);   color: var(--accent3); border: 1px solid rgba(255,230,0,0.3);  }
+    .tag-purple { background: rgba(123,47,255,0.15); color: #b97bff;        border: 1px solid rgba(123,47,255,0.3); }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      animation: fadeUp 0.6s 0.4s ease both;
+    }
+
+    .btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--accent1);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(255,60,95,0.4);
+    }
+    .btn-primary:hover { box-shadow: 0 0 40px rgba(255,60,95,0.6); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+    }
+    .btn-ghost:hover { background: rgba(0,229,255,0.08); }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 4rem; position: relative; }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1;
+      margin-bottom: 3rem;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent1), var(--accent2), transparent);
+      margin: 0 4rem;
+      opacity: 0.3;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      padding: 3rem 4rem;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      line-height: 1;
+    }
+    .stat-number.c1 { color: var(--accent1); }
+    .stat-number.c2 { color: var(--accent2); }
+    .stat-number.c3 { color: var(--accent3); }
+    .stat-number.c4 { color: #b97bff; }
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--card);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s;
+      cursor: default;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      transition: height 0.3s;
+    }
+    .project-card.c1::before { background: var(--accent1); }
+    .project-card.c2::before { background: var(--accent2); }
+    .project-card.c3::before { background: var(--accent3); }
+    .project-card.c4::before { background: #b97bff; }
+
+    .project-card:hover { transform: translateY(-3px); }
+
+    .project-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 1;
+      opacity: 0.08;
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+    }
+
+    .project-status {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      width: fit-content;
+      margin-bottom: 1.2rem;
+    }
+    .status-done    { background: rgba(0,229,255,0.1);  color: var(--accent2); border: 1px solid rgba(0,229,255,0.3); }
+    .status-wip     { background: rgba(255,230,0,0.1);  color: var(--accent3); border: 1px solid rgba(255,230,0,0.3); }
+    .status-planned { background: rgba(136,136,136,0.1); color: var(--muted);  border: 1px solid rgba(136,136,136,0.2); }
+
+    .project-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .stack-pill {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .skill-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-block-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .skill-block-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      margin-bottom: 0.8rem;
+    }
+
+    .skill-list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .skill-list li {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    .skill-block.glow-red   { box-shadow: inset 0 0 40px rgba(255,60,95,0.04); }
+    .skill-block.glow-cyan  { box-shadow: inset 0 0 40px rgba(0,229,255,0.04); }
+    .skill-block.glow-ylw   { box-shadow: inset 0 0 40px rgba(255,230,0,0.04); }
+    .skill-block.glow-purp  { box-shadow: inset 0 0 40px rgba(123,47,255,0.06);}
+
+    /* ── TERMINAL ── */
+    .terminal-wrap {
+      background: #080810;
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      max-width: 720px;
+      margin: 0 auto;
+      box-shadow: 0 0 60px rgba(0,229,255,0.08);
+    }
+
+    .terminal-bar {
+      background: #12121e;
+      padding: 0.7rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: var(--accent1); }
+    .dot-y { background: var(--accent3); }
+    .dot-g { background: #00e676; }
+
+    .terminal-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-left: 0.5rem;
+      letter-spacing: 2px;
+    }
+
+    .terminal-body {
+      padding: 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 2;
+    }
+
+    .t-prompt { color: var(--accent2); }
+    .t-cmd    { color: var(--text); }
+    .t-out    { color: #666; }
+    .t-green  { color: #00e676; }
+    .t-yellow { color: var(--accent3); }
+    .t-red    { color: var(--accent1); }
+
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--accent2);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 700px;
+    }
+
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .contact-card:hover {
+      transform: translateY(-2px);
+    }
+    .contact-card.gh:hover { border-color: var(--accent3); }
+    .contact-card.li:hover { border-color: var(--accent2); }
+
+    .contact-icon { font-size: 1.4rem; }
+    .contact-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .contact-value { font-size: 0.9rem; font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--border);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+    }
+    footer span { color: var(--accent1); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero, section { padding: 5rem 1.5rem 3rem; }
+      .stats-bar { flex-wrap: wrap; gap: 2rem; padding: 2rem 1.5rem; }
+      .divider { margin: 0 1.5rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Shiva.Dev</div>
+  <div class="nav-links">
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#terminal">Terminal</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow glow-1"></div>
+  <div class="hero-glow glow-2"></div>
+  <div class="hero-glow glow-3"></div>
+
+  <div class="hero-badge">⚡ Available for DevOps / Cloud Roles</div>
+
+  <h1>
+    <span class="highlight-red">SHIVA</span><br>
+    <span class="highlight-cyan">CHERP</span><span class="highlight-yellow">ALLI</span>
+  </h1>
+
+  <p class="hero-sub">
+    DevOps Engineer building real infrastructure — EC2, S3, Jenkins CI/CD, Terraform, Kubernetes. Every project is production-grade and documented.
+  </p>
+
+  <div class="hero-tags">
+    <span class="tag tag-red">AWS</span>
+    <span class="tag tag-cyan">Docker</span>
+    <span class="tag tag-yellow">Kubernetes</span>
+    <span class="tag tag-purple">Terraform</span>
+    <span class="tag tag-red">Jenkins</span>
+    <span class="tag tag-cyan">Linux</span>
+    <span class="tag tag-yellow">Apache2</span>
+    <span class="tag tag-purple">PM2</span>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="#contact" class="btn btn-ghost">Contact Me</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-number c1">3+</div>
+    <div class="stat-label">Projects Deployed</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number c2">AWS</div>
+    <div class="stat-label">Primary Cloud</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number c3">24/7</div>
+    <div class="stat-label">Uptime Focus</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number c4">IaC</div>
+    <div class="stat-label">Everything as Code</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// what I've built</div>
+  <div class="section-title">PROJECTS</div>
+
+  <div class="projects-grid">
+
+    <!-- P1 -->
+    <div class="project-card c1">
+      <div class="project-num">01</div>
+      <div class="project-status status-done">✓ Completed</div>
+      <div class="project-title">AWS EC2 Static Website</div>
+      <p class="project-desc">
+        Deployed a static website on Ubuntu 24.04 EC2 (t2.micro, us-east-2) using Apache2 web server with Node.js + Express and PM2 process management. Configured security groups, SSH, and public IP routing.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">AWS EC2</span>
+        <span class="stack-pill">Apache2</span>
+        <span class="stack-pill">Node.js</span>
+        <span class="stack-pill">Express</span>
+        <span class="stack-pill">PM2</span>
+        <span class="stack-pill">Ubuntu 24.04</span>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="project-card c2">
+      <div class="project-num">02</div>
+      <div class="project-status status-done">✓ Completed</div>
+      <div class="project-title">Jenkins CI/CD Pipeline</div>
+      <p class="project-desc">
+        Installed and configured Jenkins on WSL2 Ubuntu 24.04. Resolved GPG key format issues during apt setup. Groundwork for automated build-test-deploy pipelines connected to GitHub repositories.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">Jenkins</span>
+        <span class="stack-pill">WSL2</span>
+        <span class="stack-pill">Ubuntu 24.04</span>
+        <span class="stack-pill">GitHub</span>
+        <span class="stack-pill">CI/CD</span>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="project-card c3">
+      <div class="project-num">03</div>
+      <div class="project-status status-done">✓ Completed</div>
+      <div class="project-title">AWS S3 Static Website</div>
+      <p class="project-desc">
+        Hosted a static website on Amazon S3 with public access configuration, bucket policy setup, and static website hosting enabled. Demonstrates cost-effective serverless hosting on AWS.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">AWS S3</span>
+        <span class="stack-pill">Bucket Policy</span>
+        <span class="stack-pill">Static Hosting</span>
+        <span class="stack-pill">IAM</span>
+        <span class="stack-pill">HTML/CSS</span>
+      </div>
+    </div>
+
+    <!-- P4 -->
+    <div class="project-card c4">
+      <div class="project-num">04</div>
+      <div class="project-status status-planned">⬡ Coming Soon</div>
+      <div class="project-title">Terraform IaC + Docker</div>
+      <p class="project-desc">
+        Infrastructure as Code using Terraform to provision AWS resources. Containerized applications with Docker and orchestrated with Kubernetes. Full DevOps pipeline from code to cloud.
+      </p>
+      <div class="project-stack">
+        <span class="stack-pill">Terraform</span>
+        <span class="stack-pill">Docker</span>
+        <span class="stack-pill">Kubernetes</span>
+        <span class="stack-pill">AWS</span>
+        <span class="stack-pill">Helm</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// tools of the trade</div>
+  <div class="section-title">SKILLS</div>
+
+  <div class="skills-grid">
+    <div class="skill-block glow-red">
+      <div class="skill-block-icon">☁️</div>
+      <div class="skill-block-title">Cloud & Infrastructure</div>
+      <ul class="skill-list">
+        <li>AWS EC2</li><li>AWS S3</li><li>IAM</li><li>VPC</li>
+        <li>Security Groups</li><li>CloudWatch</li>
+      </ul>
+    </div>
+
+    <div class="skill-block glow-cyan">
+      <div class="skill-block-icon">🔄</div>
+      <div class="skill-block-title">CI/CD & Automation</div>
+      <ul class="skill-list">
+        <li>Jenkins</li><li>GitHub Actions</li><li>PM2</li>
+        <li>Bash Scripts</li><li>Git</li>
+      </ul>
+    </div>
+
+    <div class="skill-block glow-ylw">
+      <div class="skill-block-icon">🐳</div>
+      <div class="skill-block-title">Containers & Orchestration</div>
+      <ul class="skill-list">
+        <li>Docker</li><li>Kubernetes</li><li>Helm</li>
+        <li>Docker Compose</li>
+      </ul>
+    </div>
+
+    <div class="skill-block glow-purp">
+      <div class="skill-block-icon">🖥️</div>
+      <div class="skill-block-title">OS & Web Servers</div>
+      <ul class="skill-list">
+        <li>Ubuntu 24.04</li><li>Apache2</li><li>Nginx</li>
+        <li>WSL2</li><li>Node.js</li><li>Express</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TERMINAL -->
+<section id="terminal">
+  <div class="section-label">// behind the scenes</div>
+  <div class="section-title">TERMINAL</div>
+
+  <div class="terminal-wrap">
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="terminal-title">shiva@devops:~</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-prompt">shiva@aws:~$</span> <span class="t-cmd">sudo apt update && sudo apt install apache2 -y</span></div>
+      <div class="t-green">✓ Apache2 installed successfully</div>
+      <br>
+      <div><span class="t-prompt">shiva@aws:~$</span> <span class="t-cmd">aws s3 mb s3://amazon-s3-demo-website</span></div>
+      <div class="t-green">✓ make_bucket: amazon-s3-demo-website</div>
+      <br>
+      <div><span class="t-prompt">shiva@aws:~$</span> <span class="t-cmd">aws s3 sync . s3://amazon-s3-demo-website</span></div>
+      <div class="t-green">✓ upload: ./index.html to s3://amazon-s3-demo-website/index.html</div>
+      <br>
+      <div><span class="t-prompt">shiva@aws:~$</span> <span class="t-cmd">pm2 start app.js --name "devops-site"</span></div>
+      <div class="t-yellow">● [PM2] Starting app.js in fork_mode</div>
+      <div class="t-green">✓ App [devops-site] launched (pid: 1337)</div>
+      <br>
+      <div><span class="t-prompt">shiva@aws:~$</span> <span class="t-cmd">git push origin main</span></div>
+      <div class="t-green">✓ Branch 'main' → 'origin/main'</div>
+      <br>
+      <div><span class="t-prompt">shiva@aws:~$</span> <span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// let's connect</div>
+  <div class="section-title">CONTACT</div>
+
+  <div class="contact-grid">
+    <a href="https://github.com/cherpalli-shiva" target="_blank" class="contact-card gh">
+      <div class="contact-icon">⚡</div>
+      <div>
+        <div class="contact-label">GitHub</div>
+        <div class="contact-value">cherpalli-shiva</div>
+      </div>
+    </a>
+    <a href="https://linkedin.com/in/cherpalli-shiva" target="_blank" class="contact-card li">
+      <div class="contact-icon">🔗</div>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">cherpalli-shiva</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Built by <span>Shiva Cherpalli</span> · Hosted on AWS S3 · Project-3 of DevOps Roadmap
+</footer>
+
+</body>
+</html>
